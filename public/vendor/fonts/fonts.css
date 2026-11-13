@@ -1,0 +1,9 @@
+/* Self-hosted so pages render with no internet. All fonts are under the SIL Open Font License. */
+@font-face { font-family: 'DM Sans'; font-weight: 400; font-display: swap; src: url(dm-sans-400.woff2) format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-weight: 500; font-display: swap; src: url(dm-sans-500.woff2) format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-weight: 700; font-display: swap; src: url(dm-sans-700.woff2) format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-weight: 700; font-display: swap; src: url(playfair-700.woff2) format('woff2'); }
+@font-face { font-family: 'Noto Sans Devanagari'; font-weight: 400; font-display: swap; src: url(noto-deva-400.woff2) format('woff2'); unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF; }
+@font-face { font-family: 'Noto Sans Devanagari'; font-weight: 700; font-display: swap; src: url(noto-deva-700.woff2) format('woff2'); unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF; }
+@font-face { font-family: 'Noto Sans Gurmukhi'; font-weight: 400; font-display: swap; src: url(noto-guru-400.woff2) format('woff2'); unicode-range: U+0951-0952, U+0964-0965, U+0A00-0A7F, U+200C-200D, U+20B9, U+25CC, U+A830-A839; }
+@font-face { font-family: 'Noto Sans Gurmukhi'; font-weight: 700; font-display: swap; src: url(noto-guru-700.woff2) format('woff2'); unicode-range: U+0951-0952, U+0964-0965, U+0A00-0A7F, U+200C-200D, U+20B9, U+25CC, U+A830-A839; }

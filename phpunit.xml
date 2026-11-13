@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    <php>
+        <!-- ISOLATION (Phase 1B, 2026-11-11). APP_ENV=testing makes Laravel load .env.testing (test-only,
+             no values) INSTEAD of the live .env, so no live setting can reach a test. Every value the tests
+             need is set below; force="true" also overrides the process environment and reaches child
+             processes. The database keys are not forced, so scripts/Test-MariaDB.ps1 can point the run at
+             its throwaway database; tests/TestCase.php refuses any database but that one or :memory:. -->
+        <env name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_KEY" value="base64:yv0nszAzIq6zHk175e3THX3l2qQk2PJBKzLSFEyTrRc=" force="true"/>
+        <env name="APP_NAME" value="E-Notary" force="true"/>
+        <env name="APP_URL" value="http://localhost" force="true"/>
+        <env name="APP_DEBUG" value="false" force="true"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="BROADCAST_CONNECTION" value="null"/>
+        <env name="CACHE_STORE" value="array" force="true"/>
+        <env name="FILESYSTEM_DISK" value="local" force="true"/>
+        <env name="TRUSTED_PROXIES" value="" force="true"/>
+        <!-- Scheduler: safe mode, whatever the live .env says. Tests that cover full mode build their own Schedule. -->
+        <env name="SCHEDULER_SAFE_MODE" value="true" force="true"/>
+        <!-- Mail: no real server, account or address. The array mailer (below) records messages in memory;
+             tests that exercise SMTP point it at their own local sink or a closed port. -->
+        <env name="MAIL_HOST" value="127.0.0.1" force="true"/>
+        <env name="MAIL_PORT" value="9" force="true"/>
+        <env name="MAIL_USERNAME" value="phpunit-no-account" force="true"/>
+        <env name="MAIL_PASSWORD" value="phpunit-not-a-password" force="true"/>
+        <env name="MAIL_TIMEOUT" value="2" force="true"/>
+        <env name="MAIL_FROM_ADDRESS" value="no-reply@example.test" force="true"/>
+        <env name="MAIL_FROM_NAME" value="E-Notary" force="true"/>
+        <env name="MAIL_ADMIN_ADDRESS" value="" force="true"/>
+        <env name="MAIL_SUPPORT_ADDRESS" value="" force="true"/>
+        <env name="MAIL_MODE" value="" force="true"/>
+        <env name="OUTBOUND_ALLOW_MAIL" value="" force="true"/>
+        <env name="OUTBOUND_CONFIRM_MAIL" value="" force="true"/>
+        <env name="OUTBOUND_ALLOW_SMS" value="" force="true"/>
+        <env name="RESEND_API_KEY" value="" force="true"/>
+        <env name="POSTMARK_API_KEY" value="" force="true"/>
+        <!-- SMS: off, no sender, no template. MSG91_AUTH_KEY is forced empty further down. -->
+        <env name="MSG91_ENABLED" value="false" force="true"/>
+        <env name="MSG91_SENDER_ID" value="" force="true"/>
+        <env name="MSG91_DLT_PE_ID" value="" force="true"/>
+        <env name="MSG91_DLT_TEMPLATE_ID" value="" force="true"/>
+        <env name="MSG91_PRODUCTION_READY" value="false" force="true"/>
+        <!-- Database credentials: dummies unless a test script supplies its own (not forced, see above). -->
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_PORT" value="3306"/>
+        <env name="DB_USERNAME" value="phpunit-no-access"/>
+        <env name="DB_PASSWORD" value=""/>
+        <env name="DB_ADMIN_USERNAME" value="" force="true"/>
+        <env name="DB_ADMIN_PASSWORD" value="" force="true"/>
+        <!-- Other services: no credentials. -->
+        <env name="AWS_ACCESS_KEY_ID" value="" force="true"/>
+        <env name="AWS_SECRET_ACCESS_KEY" value="" force="true"/>
+        <env name="REDIS_PASSWORD" value="" force="true"/>
+        <env name="MEMCACHED_PASSWORD" value="" force="true"/>
+        <env name="SLACK_BOT_USER_OAUTH_TOKEN" value="" force="true"/>
+        <env name="LOG_SLACK_WEBHOOK_URL" value="" force="true"/>
+        <env name="LOG_DEPRECATIONS_CHANNEL" value="discard" force="true"/>
+        <!-- Not "null": env() reads that as no channel at all, and Laravel's fallback then writes
+             every test log line into the real storage/logs/laravel.log. -->
+        <env name="LOG_CHANNEL" value="discard" force="true"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="DB_URL" value=""/>
+        <env name="MAIL_MAILER" value="array" force="true"/>
+        <!-- Safe Preview stays the default in tests too. LiveMailTest switches Live Mail on with an in-memory transport. -->
+        <env name="LIVE_MAIL_ENABLED" value="false" force="true"/>
+        <!-- Never inherited from the local .env: tests that need them set them themselves. -->
+        <env name="LIVE_MAIL_RECIPIENTS" value="allowlist" force="true"/>
+        <env name="LIVE_MAIL_ALLOW_PERMANENT_DATABASE" value="false" force="true"/>
+        <env name="MAIL_NOTIFY_ADMIN_NEW_CITIZENS" value="false" force="true"/>
+        <!-- The live .env makes Admin two-factor mandatory; tests must not inherit it. AdminMfaTest and
+             MandatoryAdminMfaTest switch it on themselves to cover the mandatory mode. -->
+        <env name="ADMIN_MFA_REQUIRED" value="false" force="true"/>
+        <env name="QUEUE_CONNECTION" value="sync" force="true"/>
+        <!-- The older tests cover the Citizen SMS mobile step, which is now optional and off by default.
+             RealEmailOtpTest switches it off to cover the default sign-up path. -->
+        <env name="CITIZEN_MOBILE_VERIFICATION_REQUIRED" value="true" force="true"/>
+        <env name="MSG91_AUTH_KEY" value="" force="true"/>
+        <env name="MSG91_TEMPLATE_ID" value="" force="true"/>
+        <env name="MSG91_PREFLIGHT" value="false" force="true"/>
+        <env name="MSG91_ENFORCE_LIMITS" value="false" force="true"/>
+        <!-- The existing tests exercise the SMS path. MobileEmailFallbackTest turns the email fallback on. -->
+        <env name="MOBILE_EMAIL_FALLBACK" value="false" force="true"/>
+        <env name="SESSION_DRIVER" value="array" force="true"/>
+        <env name="PULSE_ENABLED" value="false"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="NIGHTWATCH_ENABLED" value="false"/>
+    </php>
+</phpunit>

@@ -1,0 +1,30 @@
+# E-Notary project-root protection (added 2026-10-28).
+#
+# This project folder sits inside Apache's DocumentRoot (XAMPP htdocs), so
+# without this file Apache serves .env, storage/logs, database files, backups
+# and even executes PHP files under app/ or vendor/. This file:
+#   1. refuses every private directory (403),
+#   2. refuses dot-files and private file types anywhere under the project,
+#   3. sends the bare project URL to public/ (Laravel's real web root).
+#
+# The application is reached at /E-Notary/enotary-project/public/ (or on
+# php artisan serve). A dedicated virtual host rooted at public/ is still the
+# recommended setup (see docs/APACHE_VHOST.md). Delete this file to revert.
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Bare project URL -> public/
+    RewriteRule ^$ %{REQUEST_URI}public/ [R=302,L]
+    # Everything except public/ is private.
+    RewriteRule ^(?!public(/|$)).* - [F,L]
+</IfModule>
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "\.(env|log|sqlite|sql|zip|bak|lock|yml|yaml|ini|md)$">
+    Require all denied
+</FilesMatch>
